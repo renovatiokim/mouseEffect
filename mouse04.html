@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouse Effect04 - jQuery</title>
+
+  <style>
+        /* reset */
+        @font-face {
+            font-family: 'NEXON Lv1 Gothic OTF';
+            font-weight: normal; 
+            font-style: normal; 
+            src: url(https://cdn.jsdelivr.net/gh/webfontworld/NEXONGothic/NEXONLv1GothicLowOTFLight.woff) format('woff');
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+
+        ul {
+            padding: 10px 20px;
+        }
+
+        li {
+            list-style: none;
+        }
+        
+        body {
+            background: url(assets/img/su04.jpg) no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            height: 100vh;
+            transition: all 0.2s;
+            overflow: hidden;
+            font-size: 16px;
+            line-height: 1.5;
+            font-family: "NEXON Lv1 Gothic OTF";
+            cursor: none;
+        }
+
+        body::before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(5,36,70,0.9);
+            z-index: -1;
+        }
+       
+        /* info */
+        .info {
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .info h1 {
+            font-size: 20px;
+            border-bottom: 1px dashed #fff;
+            margin-bottom: 8px;
+        }
+
+        .info p, .info li {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 3px;
+        }
+
+        .info li.active a:first-child {
+            background: #fff;
+            color: #000;
+        }
+
+        .info.left {
+            left: 20px;
+            top: 20px;
+        }
+
+        .info.right {
+            right: 10px;
+            top: 10px;
+        }
+
+        .info.right a {
+            display: inline-block;
+            margin-left: 5px;
+            width: 20px; height: 20px;
+            border: 1px dashed #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .info.right a:hover {
+            background: #fff;
+            color : #000;
+        }
+
+        .info.bottom {
+            left: 10px;
+            bottom: 10px;
+        }
+
+        .info.bottom li {
+            display: block;
+            transition: all 0.2s;
+        }
+
+        .info.bottom li.active {
+            color: orange;
+        }
+
+        .info.bottom li:hover {
+            color: orange;
+        }
+
+        .info.view {
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .info.view a {
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 30px;
+            padding: 5px 30px;
+        }  
+
+        @media (max-width: 800px) {
+            .info.bottom {display: none;}
+            .info.right {display: none;}
+        }
+
+        /* main */
+        .move-image {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%) perspective(600px) rotateX(0deg) rotateY(0deg);
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .move-image .mimg img {
+            border-radius: 5px;
+        }
+
+        .move-image .mimg {
+            position: relative;
+        }
+
+        .move-image .mimg::before {
+            content: '';
+            position: absolute; z-index: -1;
+            left: 5%; bottom: -20px;
+            width: 90%; height: 40px;
+            background: url(assets/img/su05.jpg) no-repeat;
+            background-size: 100% 40px;
+            filter: blur(15px);
+            opacity: 0.9;
+        }
+
+        .move-image .mtext {
+            font-size: 1vw;
+            position: absolute;
+            left: 50%; bottom: 50%;
+            transform: translate3d(-50%, 68%, 150px);
+            background: rgba(0,0,0,0.3);
+            padding: 2vw;
+            text-align: center;
+            border-radius: 2px;
+        }
+
+        .move-image .mtext p:nth-child(1){
+            font-size: 0.5vw;
+        }
+
+        
+        .cursor {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 1000;
+            background-color: #fff;
+            user-select: none;
+            pointer-events: none;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cursor.active {
+            transform: scale(12);
+        }
+  </style>
+
+</head>
+<body>
+    <div class="info right">
+        <ul>
+            <p>자바</p>
+            <li><a href="mouse01-javascript.html">1</a></li>
+            <li><a href="mouse02-javascript.html">2</a></li>
+            <li><a href="mouse03-javascript.html">3</a></li>
+            <li><a href="mouse04-javascript.html">4</a></li>
+            <li><a href="mouse05-javascript.html">5</a></li>
+            <li><a href="mouse06-javascript.html">6</a></li>
+            <li><a href="mouse07-javascript.html">7</a></li>
+            <li><a href="mouse08-javascript.html">8</a></li>
+        </ul>
+        <ul>
+            <p>제이쿼리</p>
+            <li><a href="mouse01.html">1</a></li>
+            <li><a href="mouse02.html">2</a></li>
+            <li><a href="mouse03.html">3</a></li>
+            <li class="active"><a href="mouse04.html">4</a></li>
+            <li><a href="mouse05.html">5</a></li>
+            <li><a href="mouse06.html">6</a></li>
+            <li><a href="mouse07.html">7</a></li>
+            <li><a href="mouse08.html">8</a></li>
+        </ul>
+    </div>
+  <main>
+    <div class="cursor"></div>
+    
+    <div class="move-image">
+        <div class="mimg"><img src="assets/img/su05.jpg" alt="이미지"></div>
+        <div class="mtext">
+            <p>Luck is when preparedness meets opportunity.</p>
+            <p>운이란 준비가 기회를 만나는 것이다.</p>
+        </div>
+    </div>
+  </main>
+  <!-- //main -->
+
+  <div class="info left">
+    <h1><a href="mouse00.html">jQuery Mouse Effect04</a></h1>
+    <p>마우스 방향에 따라 3D효과처럼 사진,내용 움직이기</p>
+  </div>
+
+  <div class="info bottom">
+    <ul>
+       <li>pageX : <span class="pageX"></span>0</li>
+       <li>pageY : <span class="pageY"></span>0</li>
+       <li>mouseX : <span class="mouseX"></span>0</li>
+       <li>mouseY : <span class="mouseY"></span>0</li>
+       <li>angleX : <span class="angleX"></span>0</li>
+       <li>angleY : <span class="angleY"></span>0</li>
+       <li>fmouseX : <span class="fmouseX"></span>0</li>
+       <li>fmouseY : <span class="fmouseY"></span>0</li>
+    </ul>
+  </div>
+  <!-- //info -->
+
+  <!-- script -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script>
+    // 변수선언 및 움직임
+    let x = 0,
+        y = 0, // 전역변수
+        mouseX = 0,
+        mouseY = 0, // 전역변수
+        angleX = 0,
+        angleY = 0, // 전역변수
+        fmouseX = 0,
+        fmouseY = 0; // 전역변수
+
+    $(window).mousemove(function(e) {
+        x = e.pageX; 
+        y = e.pageY; // 지역변수, 마우스의 좌표값
+
+        // mouseX = $(window).width()/2 - x;
+        // mouseY = $(window).height()/2 - y; //지역변수, 마우스의 좌표값을 가운데로 설정
+
+        // 마우스의 x축과 y축의 최솟값을 -50, 최대값을 50으로 설정해주는 것
+        mouseX = Math.max(-50, Math.min(50, $(window).width()/2 - x));
+        mouseY = Math.max(-50, Math.min(50, $(window).height()/2 - y));
+
+        angleX = (12 * mouseX) /100;
+        angleY = (12 * mouseY) /100;
+
+        fmouseX += (angleX - fmouseX) * 1/10;
+        fmouseY += (angleY - fmouseY) * 1/10;
+
+        //커서
+        gsap.to(".cursor", {left: x-5, top: y-5, duration: 0.4});
+
+        //움직임
+        // $(".move-img").css("width", "399px") //속성이 하나일때
+        // $(".move-img").css({"width":"399px", "height":"399px" }) // 속성이 두개일때 {}
+        // $(".move-image").css({ "transform": "translate(-50%, -50%) perspective(600px) rotateX("+ x +"deg) rotateY("+ y +"deg)" }); //문자열과 변수를 결합할때 ++
+        $(".move-image").css({ "transform": "translate(-50%, -50%) perspective(600px) rotateX("+ fmouseY +"deg) rotateY("+ -fmouseX +"deg)" }); 
+        
+    }); 
+
+    //출력용
+    $(window).mousemove(function(e){
+        $(".pageX").text(x); 
+        $(".pageY").text(y);
+        $(".mouseX").text(mouseX);
+        $(".mouseY").text(mouseY);
+        $(".angleX").text(angleX);
+        $(".angleY").text(angleY);
+        $(".fmouseX").text(Math.round(fmouseX));
+        $(".fmouseY").text(Math.round(fmouseY));
+    });
+
+  </script>
+
+</body>
+</html>
